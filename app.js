@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 
 //db connection
-// require('./models/dbconfig').dbconnection();
+require('./models/dbconfig').dbconnection();
 
 
 //routes
@@ -19,7 +19,11 @@ app.use(express.urlencoded({extended: true}));
 
 
 
-app.use('/api/user', userRouter);
+app.use('/', userRouter);
+
+app.all("*", (req,res,next)=> {
+    res.status(404).json({success: false, message: `${req.url} route not found`})
+})
 
 //server
 app.listen(process.env.PORT, ()=>{
